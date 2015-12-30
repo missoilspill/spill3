@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Random;
 
@@ -636,19 +637,14 @@ public class mainGui extends JFrame {
     private void startButtonActionPerformed(ActionEvent evt) throws IOException {
         startButton.setText("STOP");
 
-        cellularAlgorithm = new CellularAlgorithm(this);
+
         //wspParowania = Integer.parseInt(wspParowaniaField.getText());
         int t = 0;
 
-        for(int i=0; i<703; i++){
-            for(int j=0; j<570; j++){
-                table2[i][j] = 0;
-                if(i>650 + generator.nextInt(20)) table2[i][j]=-1;
-            }
-        }
+
         String sciezka = "plansza256.bmp";
         table2=readShore(sciezka);
-
+        cellularAlgorithm = new CellularAlgorithm(this);
         resultsPanel.draw();
 
         cellularAlgorithm.setRatiosInCurrentNeighborhood(-Double.parseDouble(wspYTextFieldPrad.getText()), Double.parseDouble(wspXTextFieldPrad.getText()), Double.parseDouble(powerTextFieldPrad.getText()));
@@ -759,12 +755,12 @@ public class mainGui extends JFrame {
         String sciezka = path;
         BufferedImage img = ImageIO.read(new File(sciezka));
 
-        int wiersze = 700, kolumny = 570;
+        int wiersze = 708, kolumny = 708;
 
-        double[][] pixels = new double[wiersze][kolumny];
+        double[][] pixels = new double[kolumny][wiersze];
         int wart = 0;
-        for (int w = 0; w < wiersze; w++) {
-            for (int k = 0; k < kolumny; k++) {
+        for (int w = 2; w < 500; w++) {
+            for (int k =2; k < 700; k++) {
                 wart = img.getRGB(k, w);
                 if (wart == -1) {
                     pixels[w][k] = 0.0;
