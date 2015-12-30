@@ -16,6 +16,25 @@ public class ResultsPanel extends JPanel {
         super.paintComponent(g);
     }
 
+   public void saveTableToFile(double [][] tab) throws FileNotFoundException, IOException {
+    	File folderWithResults = new File("Results");
+    	if (!folderWithResults.exists()) {
+    		folderWithResults.mkdir();
+    	}    	
+    	int countOfFiles = folderWithResults.listFiles().length;
+    	File resultFile = new File("./Results/res_ " + (countOfFiles+1) + ".txt");
+		resultFile.createNewFile();
+		
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile)));
+    	for (int i=0; i<tab.length; i++){
+    		for (int j=0; j<tab[0].length; j++){
+    			bw.write(String.valueOf(tab[i][j]));
+    			bw.write(" ");
+    		}
+    		bw.newLine();
+    	}
+    	bw.close();
+    }
 
 
     public void draw() {
