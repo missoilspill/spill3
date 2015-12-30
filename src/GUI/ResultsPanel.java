@@ -77,12 +77,12 @@ public class ResultsPanel extends JPanel {
                     g.setColor(c);
                     g.drawRect(i, j, 1, 1);
                 }
-                if(x==-1){
+                if(x==-2){
                     c = new Color(0,255,0);
                     g.setColor(c);
                     g.drawRect(i, j, 1, 1);
                 }
-                if(x==-2){
+                if(x==-1){
                     c = new Color(225,251,141);
                     g.setColor(c);
                     g.drawRect(i, j, 1, 1);
