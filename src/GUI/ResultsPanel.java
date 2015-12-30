@@ -2,6 +2,12 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class ResultsPanel extends JPanel {
 
@@ -76,6 +82,12 @@ public class ResultsPanel extends JPanel {
                     g.setColor(c);
                     g.drawRect(i, j, 1, 1);
                 }
+                if(x==-2){
+                    c = new Color(225,251,141);
+                    g.setColor(c);
+                    g.drawRect(i, j, 1, 1);
+                }
+                
             }
         revalidate();
     }
