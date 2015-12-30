@@ -655,6 +655,14 @@ public class mainGui extends JFrame {
         while(t<1000){
             if(t<500) cellularAlgorithm.addMoreOil();
             if(t % 100==0)System.out.println("time "+t);
+            if (t==500)
+				try {
+					resultsPanel.saveTableToFile(table2);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
             cellularAlgorithm.randomtable2();
             cellularAlgorithm.evaporation(Double.parseDouble(wspParowaniaField.getText()));
             cellularAlgorithm.pradyMorskie(Integer.parseInt(startX.getText()),
