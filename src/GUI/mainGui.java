@@ -635,7 +635,7 @@ public class mainGui extends JFrame {
 
 
     private void startButtonActionPerformed(ActionEvent evt) throws IOException {
-        startButton.setText("STOP");
+       // startButton.setText("STOP");
 
 
         //wspParowania = Integer.parseInt(wspParowaniaField.getText());
@@ -751,23 +751,34 @@ public class mainGui extends JFrame {
             }
         });
     }
+
+    
+    
     static double [][] readShore(String path) throws IOException {
         String sciezka = path;
         BufferedImage img = ImageIO.read(new File(sciezka));
 
         int wiersze = 708, kolumny = 708;
 
-        double[][] pixels = new double[kolumny][wiersze];
+        double[][] pixels = new double[708][578];
+        
+        for(int i=0; i<703; i++){
+            for(int j=0; j<570; j++){
+                pixels[i][j] = 0;
+              //  if(i>650 + generator.nextInt(20)) table2[i][j]=-1;
+            }
+        }
+        
         int wart = 0;
-        for (int w = 2; w < 500; w++) {
-            for (int k =2; k < 700; k++) {
-                wart = img.getRGB(k, w);
+        for (int w = 2; w < 703; w++) {
+            for (int k =2; k < 570; k++) {
+                wart = img.getRGB(w, k);
                 if (wart == -1) {
-                    pixels[w][k] = 0.0;
+                    pixels[w][k] = 0;
                 } else if(wart>-10000000){//plaza
-                    pixels[w][k] = -1.0;
+                    pixels[w][k] = -1;
                 }    else {//skaly
-                    pixels[w][k]=-2.0;
+                    pixels[w][k]=-2;
                 }
 
             }
