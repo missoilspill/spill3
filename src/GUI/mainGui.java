@@ -2,10 +2,15 @@ package GUI;
 
 import model.CellularAlgorithm;
 import model.Wind;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -200,7 +205,11 @@ public class mainGui extends JFrame {
         startButton.setMaximumSize(new java.awt.Dimension(80, 34));
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                startButtonActionPerformed(evt);
+                try {
+                    startButtonActionPerformed(evt);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -624,7 +633,7 @@ public class mainGui extends JFrame {
 
 
 
-    private void startButtonActionPerformed(ActionEvent evt) {
+    private void startButtonActionPerformed(ActionEvent evt) throws IOException {
         startButton.setText("STOP");
 
         cellularAlgorithm = new CellularAlgorithm(this);
@@ -637,7 +646,8 @@ public class mainGui extends JFrame {
                 if(i>650 + generator.nextInt(20)) table2[i][j]=-1;
             }
         }
-
+        String sciezka = "plansza256.bmp";
+        table2=readShore(sciezka);
 
         resultsPanel.draw();
 
@@ -737,5 +747,27 @@ public class mainGui extends JFrame {
             }
         });
     }
+    static double [][] readShore(String path) throws IOException {
+        String sciezka = path;
+        BufferedImage img = ImageIO.read(new File(sciezka));
 
+        int wiersze = 700, kolumny = 570;
+
+        double[][] pixels = new double[wiersze][kolumny];
+        int wart = 0;
+        for (int w = 0; w < wiersze; w++) {
+            for (int k = 0; k < kolumny; k++) {
+                wart = img.getRGB(k, w);
+                if (wart == -1) {
+                    pixels[w][k] = 0.0;
+                } else if(wart>-10000000){//plaza
+                    pixels[w][k] = -1.0;
+                }    else {//skaly
+                    pixels[w][k]=-2.0;
+                }
+
+            }
+        }
+        return pixels;
+    }
 }
