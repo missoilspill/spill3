@@ -26,8 +26,8 @@ public class CellularAlgorithm {
     public void evaporation(double intensiviti) {
         for (int wiersz = 0; wiersz < table2.length; wiersz++) {
             for (int kolumna = 0; kolumna < table2[wiersz].length; kolumna++) {
-                if (table2[wiersz][kolumna] > 0.01) table2[wiersz][kolumna] = table2[wiersz][kolumna] - intensiviti;
-                else if (table2[wiersz][kolumna] <= 0.01) table2[wiersz][kolumna] = 0;
+                if (table2[wiersz][kolumna]-intensiviti > 0.0001) table2[wiersz][kolumna] = table2[wiersz][kolumna] - intensiviti;
+                else if (table2[wiersz][kolumna] <= 0.0001) table2[wiersz][kolumna] = 0;
             }
         }
     }
