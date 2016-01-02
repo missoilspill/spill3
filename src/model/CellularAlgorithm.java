@@ -82,24 +82,26 @@ public class CellularAlgorithm {
         //System.out.println(MooreNeighborhood[7] + " " + MooreNeighborhood[8] + " " + MooreNeighborhood[9]);
     }
 
-    public void pradyMorskie(int startX,int endX, int startY,int endY) {
-        double[][] temp = new double[700][570];
-        for (int wiersz = 0; wiersz < 700; wiersz++) {
-            for (int kolumna = 0; kolumna < 570; kolumna++) {
+    public void pradyMorskie(int startX, int endX, int startY, int endY,double[][] shore) {
+        double[][] temp = new double[708][578];
+        for (int wiersz = 0; wiersz < 708; wiersz++) {
+            for (int kolumna = 0; kolumna < 578; kolumna++) {
                 temp[wiersz][kolumna] = table2[wiersz][kolumna];
             }
         }
         for (int wiersz = startY; wiersz < endY; wiersz++) {
             for (int kolumna = startX; kolumna < endX; kolumna++) {
-                temp[wiersz][kolumna] = (table2[wiersz - 1][kolumna - 1] * MooreNeighborhood[1] +
-                        table2[wiersz - 1][kolumna] * MooreNeighborhood[2] +
-                        table2[wiersz - 1][kolumna + 1] * MooreNeighborhood[3] +
-                        table2[wiersz][kolumna - 1] * MooreNeighborhood[4] +
-                        table2[wiersz][kolumna] * MooreNeighborhood[5] +
-                        table2[wiersz][kolumna + 1] * MooreNeighborhood[6] +
-                        table2[wiersz + 1][kolumna - 1] * MooreNeighborhood[7] +
-                        table2[wiersz + 1][kolumna] * MooreNeighborhood[8] +
-                        table2[wiersz + 1][kolumna + 1] * MooreNeighborhood[9]);
+                if (shore[wiersz][kolumna] >= 0) {
+                    temp[wiersz][kolumna] = (table2[wiersz - 1][kolumna - 1] * MooreNeighborhood[1] +
+                            table2[wiersz - 1][kolumna] * MooreNeighborhood[2] +
+                            table2[wiersz - 1][kolumna + 1] * MooreNeighborhood[3] +
+                            table2[wiersz][kolumna - 1] * MooreNeighborhood[4] +
+                            table2[wiersz][kolumna] * MooreNeighborhood[5] +
+                            table2[wiersz][kolumna + 1] * MooreNeighborhood[6] +
+                            table2[wiersz + 1][kolumna - 1] * MooreNeighborhood[7] +
+                            table2[wiersz + 1][kolumna] * MooreNeighborhood[8] +
+                            table2[wiersz + 1][kolumna + 1] * MooreNeighborhood[9]);
+                }
             }
         }
         for (int wiersz = 0; wiersz < 700; wiersz++) {

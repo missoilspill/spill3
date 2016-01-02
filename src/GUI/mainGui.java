@@ -27,7 +27,7 @@ public class mainGui extends JFrame{
 	String yDir;
 	String windPow;
 	static double thickness=2;
-
+    double [][]shore;
 	double [][] temp = new double[700][570];
 	static double[][] table2 = new double[708][578];
 	static double[][] poprzednia = new double[700][570];
@@ -647,9 +647,9 @@ public class mainGui extends JFrame{
 
 
 		String sciezka = "plansza256.bmp";
-		table2=readShore(sciezka);
+		shore=readShore(sciezka);
 		cellularAlgorithm = new CellularAlgorithm(this);
-		resultsPanel.draw();
+
 
 
 
@@ -659,7 +659,7 @@ public class mainGui extends JFrame{
 		new Thread() {
 			@Override
 			public void run() {
-				
+                resultsPanel.draw(shore);
 				int t = 0;
 				while(t<1000 && !stop){
 					if(t<500) cellularAlgorithm.addMoreOil();
@@ -672,16 +672,17 @@ public class mainGui extends JFrame{
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-					cellularAlgorithm.randomtable2();
+					//cellularAlgorithm.randomtable2();
 					cellularAlgorithm.evaporation(Double.parseDouble(wspParowaniaField.getText()));
 					cellularAlgorithm.pradyMorskie(Integer.parseInt(startX.getText()),
 							Integer.parseInt(endX.getText()),
 							Integer.parseInt(startY.getText()),
-							Integer.parseInt(endY.getText()));
-					resultsPanel.draw();
+							Integer.parseInt(endY.getText()),shore);
+					resultsPanel.draw(table2);
 					t++;
+                    //resultsPanel.draw(shore); przez rysowanie brzegu tak okropnie zwalnia
 				}
-				resultsPanel.draw();
+				resultsPanel.draw(table2);
 			}
 		}.start();
 	}
@@ -707,10 +708,10 @@ public class mainGui extends JFrame{
 	}
 
 
-	public void randomTable(){
-		for(int i=0; i<700; i++){
-			for(int j=0; j<570; j++){
-				table[i][j] = (byte) (generator.nextInt(2)-1);
+	public void zeros(double [][] arg){
+		for(int i=0; i<708; i++){
+			for(int j=0; j<578; j++){
+				arg[i][j] = 0.0;
 			}
 		}
 	}

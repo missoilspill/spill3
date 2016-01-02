@@ -43,12 +43,12 @@ public class ResultsPanel extends JPanel {
     }
 
 
-    public void draw() {
+    public void draw(double [] [] arg) {
         double x;
         Graphics g = getGraphics();
         for (int i = 2; i < 706; i++)
             for (int j = 8; j < 577; j++) {
-                x = mainGui.table2[i][j];
+                x =arg[i][j];
                 if (x != 0) {
                     if (x > 17)
                         c = new Color(0, 0, 0);
