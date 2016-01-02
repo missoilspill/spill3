@@ -73,7 +73,7 @@ public class CellularAlgorithm {
         {
             MooreNeighborhood[2] = 1;
         }
-        MooreNeighborhood[5] = 100 / currentPower;
+        MooreNeighborhood[5] = 100 / currentPower; //zwiekszenie licznika spowalnia moze byc np 100000 dla plazy
         double normalizacja = sumOfArray(MooreNeighborhood);
         for (int i = 0; i < MooreNeighborhood.length; i++) MooreNeighborhood[i] /= normalizacja;
         // System.out.println("xpradu:" + xCurrent + "   yprdu:" + yCurrent + "   currentPower:" + currentPower);
@@ -82,7 +82,7 @@ public class CellularAlgorithm {
         //System.out.println(MooreNeighborhood[7] + " " + MooreNeighborhood[8] + " " + MooreNeighborhood[9]);
     }
 
-    public void pradyMorskie(int startX, int endX, int startY, int endY,double[][] shore) {
+    public void pradyMorskie(int startX, int endX, int startY, int endY, double[][] shore) {
         double[][] temp = new double[708][578];
         for (int wiersz = 0; wiersz < 708; wiersz++) {
             for (int kolumna = 0; kolumna < 578; kolumna++) {
@@ -112,16 +112,17 @@ public class CellularAlgorithm {
 
     }
 
-    public void randomtable2() {
+    public void windEffect(double[][] shore) {
         wind = mg.getWind();
         double xWind, yWind;
         double xDirection, yDirection;
         double sumOfWindRatios;
+        double sumOfWindRatiosBeach = 0;
         int windPower;
         double pitagorasRatio;
-        double[][] temp = new double[700][570];
+        double[][] temp = new double[708][578];
         double[] r = new double[10];            //współczynniki w otoczeniu piksela r[5], którego wartoć wyliczamy, a pozostałe układajš się zgodnie z numeracjš klawiatruy na komórce
-
+        double[] rBEACH = new double[10];
         xDirection = wind.getX();
         yDirection = wind.getY();
         windPower = wind.getPower();
@@ -131,8 +132,10 @@ public class CellularAlgorithm {
 
         if (windPower == 0) {
             setDefaultRatios(r);
+            setDefaultRatios(rBEACH);
         } else {
-            setWindRatios(r, xWind, yWind);
+            r = setWindRatios(r, xWind, yWind, false);
+            rBEACH = setWindRatios(rBEACH, xWind, yWind, true);
         }
         /*System.out.println(r[1] + " " + r[2] + " " +r[3]);
         System.out.println(r[4] + " " + r[5] + " " +r[6]);
@@ -140,32 +143,48 @@ public class CellularAlgorithm {
 		System.out.println(yDirection + " " + xDirection + " " + windPower);
 		System.out.println("xWind: " + xWind + " yWind: " + yWind);
 		*/
-
+        //GRAWITACJA ROZMAZANIE
         sumOfWindRatios = sumOfArray(r);
-        for (int i = 1; i < 699; i++) {
-            for (int j = 1; j < 569; j++) {
-                temp[i][j] = (2 * (table2[i - 1][j] + table2[i + 1][j] + table2[i][j - 1] + table2[i][j + 1]) + 4 * table2[i][j]
-                        + (table2[i - 1][j - 1] + table2[i + 1][j + 1] + table2[i - 1][j + 1] + table2[i + 1][j - 1])) / 16;
+        sumOfWindRatiosBeach = sumOfArray(rBEACH);
+        for (int i = 1; i < 707; i++) {
+            for (int j = 1; j < 577; j++) {
+                if (shore[i][j] > -4.0) {//rozmazuje wszedzie za wyjatkiem skal
+                    temp[i][j] = (2 * (table2[i - 1][j] + table2[i + 1][j] + table2[i][j - 1] + table2[i][j + 1]) + 4 * table2[i][j]
+                            + (table2[i - 1][j - 1] + table2[i + 1][j + 1] + table2[i - 1][j + 1] + table2[i + 1][j - 1])) / 16;
 
+                }
             }
         }
-        for (int i = 0; i < 700; i++) {
-            for (int j = 0; j < 570; j++) {
+        //przepisanie
+        for (int i = 0; i < 708; i++) {
+            for (int j = 0; j < 578; j++) {
                 table2[i][j] = temp[i][j];
             }
         }
+        //KONIEC GRAWITACJI
 
-        for (int i = 1; i < 699; i++) {
-            for (int j = 1; j < 569; j++) {
-                temp[i][j] = (r[2] * table2[i - 1][j] + r[8] * table2[i + 1][j] + r[4] * table2[i][j - 1] + r[6] * table2[i][j + 1] + r[5] * table2[i][j] + r[1] * table2[i - 1][j - 1] + r[9] * table2[i + 1][j + 1] + r[3] * table2[i - 1][j + 1] + r[7] * table2[i + 1][j - 1]) / sumOfWindRatios;
+
+        //WIATR
+        for (int i = 1; i < 707; i++) {
+            for (int j = 1; j < 577; j++) {
+                if (shore[i][j] == 0.0) {//jesli jestesmy na morzu - zostawilem
+                    temp[i][j] = (r[2] * table2[i - 1][j] + r[8] * table2[i + 1][j] + r[4] * table2[i][j - 1] + r[6] * table2[i][j + 1] + r[5] * table2[i][j] + r[1] * table2[i - 1][j - 1] + r[9] * table2[i + 1][j + 1] + r[3] * table2[i - 1][j + 1] + r[7] * table2[i + 1][j - 1]) / sumOfWindRatios;
 //				 temp[i][j] = (2*(mg.table2[i-1][j]+mg.table2[i+1][j]+mg.table2[i][j-1]+mg.table2[i][j+1]) + 4*mg.table2[i][j] + (mg.table2[i-1][j-1] + mg.table2[i+1][j+1] + mg.table2[i-1][j+1] + mg.table2[i+1][j-1]))/16;
+                } else if (shore[i][j] == -1.0) {//jesli jestemy na plazy - ropa porusza sie duzo wolniej
+                    temp[i][j] = (rBEACH[2] * table2[i - 1][j] + rBEACH[8] * table2[i + 1][j] + rBEACH[4] * table2[i][j - 1] + rBEACH[6] * table2[i][j + 1] + rBEACH[5] * table2[i][j] + rBEACH[1] * table2[i - 1][j - 1] + rBEACH[9] * table2[i + 1][j + 1] + rBEACH[3] * table2[i - 1][j + 1] + rBEACH[7] * table2[i + 1][j - 1]) / sumOfWindRatiosBeach;
+
+                } else if (shore[i][j] == -2.0) {//na skalach przepisujemy ale w sumie moglibysmy pisac 0
+                    temp[i][j] = 0;
+                }
             }
         }
-        for (int i = 0; i < 700; i++) {
-            for (int j = 0; j < 570; j++) {
+        ///przepisanie
+        for (int i = 0; i < 708; i++) {
+            for (int j = 0; j < 578; j++) {
                 table2[i][j] = temp[i][j];
             }
         }
+        //KONIEC WIATRU
 
     }
 
@@ -175,6 +194,7 @@ public class CellularAlgorithm {
      * @param r tablica
      * @return
      */
+
     public double sumOfArray(double[] r) {
         double sum = 0;
         for (int i = 1; i < r.length; i++)
@@ -189,11 +209,15 @@ public class CellularAlgorithm {
      * @param xWind
      * @param yWind
      */
-    public void setWindRatios(double[] r, double xWind, double yWind) {
-        resetTab(r);
+    public double[] setWindRatios(double[] r, double xWind, double yWind, boolean beach) {
+        r = resetTab(r);
         double windXInfluence = windRatio * Math.abs(xWind);
         double windYInfluence = windRatio * Math.abs(yWind);
-        r[5] = 1;
+        if (beach) {//
+            r[5] = 100000;
+        } else {
+            r[5] = 1;
+        }
         if (xWind > 0 && yWind > 0)    // SE wind
         {
             r[1] = windXInfluence + windYInfluence;
@@ -227,10 +251,13 @@ public class CellularAlgorithm {
             r[8] = windYInfluence;
             r[4] = windXInfluence;
         }
-        for (int i = 1; i < r.length; i++) {
-            if (r[i] > 1)
-                r[i] = 1;
+        if (!beach) {
+            for (int i = 1; i < r.length; i++) {
+                if (r[i] > 1)
+                    r[i] = 1;
+            }
         }
+        return r;
     }
 
     /**
@@ -256,9 +283,10 @@ public class CellularAlgorithm {
         return directionalValue / pitagoras * windPower;
     }
 
-    public void resetTab(double[] r) {
+    public double[] resetTab(double[] r) {
         for (int i = 1; i < r.length; i++)
             r[i] = 0;
+        return r;
     }
 
     /**

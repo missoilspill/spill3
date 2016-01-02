@@ -66,13 +66,13 @@ public class ResultsPanel extends JPanel {
                         c = new Color(150, 150, 150);
                     else if (x > 1)
                         c = new Color(160, 160, 160);
-                    else if (x > 0.1)
+                    else if (x > 0.00001)
                         c = new Color(170, 170, 170);
                     else c = new Color(95, 155, 228);
                     g.setColor(c);
                     g.drawRect(i, j, 1, 1);
                 }
-                if (x < 0.1 && x != 0) {
+                if (x < 0.000001 && x != 0) {
                     c = new Color(95, 155, 228);
                     g.setColor(c);
                     g.drawRect(i, j, 1, 1);

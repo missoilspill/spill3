@@ -672,7 +672,8 @@ public class mainGui extends JFrame{
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-					//cellularAlgorithm.randomtable2();
+					cellularAlgorithm.windEffect(shore);
+
 					cellularAlgorithm.evaporation(Double.parseDouble(wspParowaniaField.getText()));
 					cellularAlgorithm.pradyMorskie(Integer.parseInt(startX.getText()),
 							Integer.parseInt(endX.getText()),
