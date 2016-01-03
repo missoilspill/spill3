@@ -659,7 +659,7 @@ public class mainGui extends JFrame{
 		new Thread() {
 			@Override
 			public void run() {
-                resultsPanel.draw(shore);
+                resultsPanel.draw(shore,shore);
 				int t = 0;
 				while(t<1000 && !stop){
 					if(t<500) cellularAlgorithm.addMoreOil();
@@ -679,11 +679,11 @@ public class mainGui extends JFrame{
 							Integer.parseInt(endX.getText()),
 							Integer.parseInt(startY.getText()),
 							Integer.parseInt(endY.getText()),shore);
-					resultsPanel.draw(table2);
+					resultsPanel.draw(table2,shore);
 					t++;
                     //resultsPanel.draw(shore); przez rysowanie brzegu tak okropnie zwalnia
 				}
-				resultsPanel.draw(table2);
+				resultsPanel.draw(table2,shore);
 			}
 		}.start();
 	}

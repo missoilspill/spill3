@@ -174,7 +174,7 @@ public class CellularAlgorithm {
                     temp[i][j] = (rBEACH[2] * table2[i - 1][j] + rBEACH[8] * table2[i + 1][j] + rBEACH[4] * table2[i][j - 1] + rBEACH[6] * table2[i][j + 1] + rBEACH[5] * table2[i][j] + rBEACH[1] * table2[i - 1][j - 1] + rBEACH[9] * table2[i + 1][j + 1] + rBEACH[3] * table2[i - 1][j + 1] + rBEACH[7] * table2[i + 1][j - 1]) / sumOfWindRatiosBeach;
 
                 } else if (shore[i][j] == -2.0) {//na skalach przepisujemy ale w sumie moglibysmy pisac 0
-                    temp[i][j] = 0;
+                    temp[i][j] = temp[i][j];
                 }
             }
         }
