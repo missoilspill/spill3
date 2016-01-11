@@ -6,7 +6,7 @@ public class CellularAlgorithm {
     private static mainGui mg;
     Wind wind;
     static double windRatio = mg.getWindRatio();
-    static double[][] table2 = mg.getTable2();
+    static double[][] actualBoard = mg.getactualBoard();
     static double[] MooreNeighborhood = new double[10];
 
     public CellularAlgorithm(mainGui mg) {
@@ -16,7 +16,7 @@ public class CellularAlgorithm {
     public void addMoreOil() {
         for (int i = 345; i < 355; i++) {
             for (int j = 285; j < 290; j++) {
-                table2[i][j] = table2[i][j] + 5;
+                actualBoard[i][j] = actualBoard[i][j] + 5;
             }
         }
 
@@ -24,10 +24,10 @@ public class CellularAlgorithm {
 
 
     public void evaporation(double intensiviti) {
-        for (int wiersz = 0; wiersz < table2.length; wiersz++) {
-            for (int kolumna = 0; kolumna < table2[wiersz].length; kolumna++) {
-                if (table2[wiersz][kolumna]-intensiviti > 0.0001) table2[wiersz][kolumna] = table2[wiersz][kolumna] - intensiviti;
-                else if (table2[wiersz][kolumna] <= 0.0001) table2[wiersz][kolumna] = 0;
+        for (int wiersz = 0; wiersz < actualBoard.length; wiersz++) {
+            for (int kolumna = 0; kolumna < actualBoard[wiersz].length; kolumna++) {
+                if (actualBoard[wiersz][kolumna]-intensiviti > 0.0001) actualBoard[wiersz][kolumna] = actualBoard[wiersz][kolumna] - intensiviti;
+                else if (actualBoard[wiersz][kolumna] <= 0.0001) actualBoard[wiersz][kolumna] = 0;
             }
         }
     }
@@ -86,27 +86,27 @@ public class CellularAlgorithm {
         double[][] temp = new double[708][578];
         for (int wiersz = 0; wiersz < 708; wiersz++) {
             for (int kolumna = 0; kolumna < 578; kolumna++) {
-                temp[wiersz][kolumna] = table2[wiersz][kolumna];
+                temp[wiersz][kolumna] = actualBoard[wiersz][kolumna];
             }
         }
         for (int wiersz = startY; wiersz < endY; wiersz++) {
             for (int kolumna = startX; kolumna < endX; kolumna++) {
                 if (shore[wiersz][kolumna] >= 0) {
-                    temp[wiersz][kolumna] = (table2[wiersz - 1][kolumna - 1] * MooreNeighborhood[1] +
-                            table2[wiersz - 1][kolumna] * MooreNeighborhood[2] +
-                            table2[wiersz - 1][kolumna + 1] * MooreNeighborhood[3] +
-                            table2[wiersz][kolumna - 1] * MooreNeighborhood[4] +
-                            table2[wiersz][kolumna] * MooreNeighborhood[5] +
-                            table2[wiersz][kolumna + 1] * MooreNeighborhood[6] +
-                            table2[wiersz + 1][kolumna - 1] * MooreNeighborhood[7] +
-                            table2[wiersz + 1][kolumna] * MooreNeighborhood[8] +
-                            table2[wiersz + 1][kolumna + 1] * MooreNeighborhood[9]);
+                    temp[wiersz][kolumna] = (actualBoard[wiersz - 1][kolumna - 1] * MooreNeighborhood[1] +
+                            actualBoard[wiersz - 1][kolumna] * MooreNeighborhood[2] +
+                            actualBoard[wiersz - 1][kolumna + 1] * MooreNeighborhood[3] +
+                            actualBoard[wiersz][kolumna - 1] * MooreNeighborhood[4] +
+                            actualBoard[wiersz][kolumna] * MooreNeighborhood[5] +
+                            actualBoard[wiersz][kolumna + 1] * MooreNeighborhood[6] +
+                            actualBoard[wiersz + 1][kolumna - 1] * MooreNeighborhood[7] +
+                            actualBoard[wiersz + 1][kolumna] * MooreNeighborhood[8] +
+                            actualBoard[wiersz + 1][kolumna + 1] * MooreNeighborhood[9]);
                 }
             }
         }
         for (int wiersz = 0; wiersz < 700; wiersz++) {
             for (int kolumna = 0; kolumna < 570; kolumna++) {
-                table2[wiersz][kolumna] = temp[wiersz][kolumna];
+                actualBoard[wiersz][kolumna] = temp[wiersz][kolumna];
             }
         }
 
@@ -149,8 +149,8 @@ public class CellularAlgorithm {
         for (int i = 1; i < 707; i++) {
             for (int j = 1; j < 577; j++) {
                 if (shore[i][j] > -4.0) {//rozmazuje wszedzie za wyjatkiem skal
-                    temp[i][j] = (2 * (table2[i - 1][j] + table2[i + 1][j] + table2[i][j - 1] + table2[i][j + 1]) + 4 * table2[i][j]
-                            + (table2[i - 1][j - 1] + table2[i + 1][j + 1] + table2[i - 1][j + 1] + table2[i + 1][j - 1])) / 16;
+                    temp[i][j] = (2 * (actualBoard[i - 1][j] + actualBoard[i + 1][j] + actualBoard[i][j - 1] + actualBoard[i][j + 1]) + 4 * actualBoard[i][j]
+                            + (actualBoard[i - 1][j - 1] + actualBoard[i + 1][j + 1] + actualBoard[i - 1][j + 1] + actualBoard[i + 1][j - 1])) / 16;
 
                 }
             }
@@ -158,7 +158,7 @@ public class CellularAlgorithm {
         //przepisanie
         for (int i = 0; i < 708; i++) {
             for (int j = 0; j < 578; j++) {
-                table2[i][j] = temp[i][j];
+                actualBoard[i][j] = temp[i][j];
             }
         }
         //KONIEC GRAWITACJI
@@ -168,10 +168,10 @@ public class CellularAlgorithm {
         for (int i = 1; i < 707; i++) {
             for (int j = 1; j < 577; j++) {
                 if (shore[i][j] == 0.0) {//jesli jestesmy na morzu - zostawilem
-                    temp[i][j] = (r[2] * table2[i - 1][j] + r[8] * table2[i + 1][j] + r[4] * table2[i][j - 1] + r[6] * table2[i][j + 1] + r[5] * table2[i][j] + r[1] * table2[i - 1][j - 1] + r[9] * table2[i + 1][j + 1] + r[3] * table2[i - 1][j + 1] + r[7] * table2[i + 1][j - 1]) / sumOfWindRatios;
-//				 temp[i][j] = (2*(mg.table2[i-1][j]+mg.table2[i+1][j]+mg.table2[i][j-1]+mg.table2[i][j+1]) + 4*mg.table2[i][j] + (mg.table2[i-1][j-1] + mg.table2[i+1][j+1] + mg.table2[i-1][j+1] + mg.table2[i+1][j-1]))/16;
+                    temp[i][j] = (r[2] * actualBoard[i - 1][j] + r[8] * actualBoard[i + 1][j] + r[4] * actualBoard[i][j - 1] + r[6] * actualBoard[i][j + 1] + r[5] * actualBoard[i][j] + r[1] * actualBoard[i - 1][j - 1] + r[9] * actualBoard[i + 1][j + 1] + r[3] * actualBoard[i - 1][j + 1] + r[7] * actualBoard[i + 1][j - 1]) / sumOfWindRatios;
+//				 temp[i][j] = (2*(mg.actualBoard[i-1][j]+mg.actualBoard[i+1][j]+mg.actualBoard[i][j-1]+mg.actualBoard[i][j+1]) + 4*mg.actualBoard[i][j] + (mg.actualBoard[i-1][j-1] + mg.actualBoard[i+1][j+1] + mg.actualBoard[i-1][j+1] + mg.actualBoard[i+1][j-1]))/16;
                 } else if (shore[i][j] == -1.0) {//jesli jestemy na plazy - ropa porusza sie duzo wolniej
-                    temp[i][j] = (rBEACH[2] * table2[i - 1][j] + rBEACH[8] * table2[i + 1][j] + rBEACH[4] * table2[i][j - 1] + rBEACH[6] * table2[i][j + 1] + rBEACH[5] * table2[i][j] + rBEACH[1] * table2[i - 1][j - 1] + rBEACH[9] * table2[i + 1][j + 1] + rBEACH[3] * table2[i - 1][j + 1] + rBEACH[7] * table2[i + 1][j - 1]) / sumOfWindRatiosBeach;
+                    temp[i][j] = (rBEACH[2] * actualBoard[i - 1][j] + rBEACH[8] * actualBoard[i + 1][j] + rBEACH[4] * actualBoard[i][j - 1] + rBEACH[6] * actualBoard[i][j + 1] + rBEACH[5] * actualBoard[i][j] + rBEACH[1] * actualBoard[i - 1][j - 1] + rBEACH[9] * actualBoard[i + 1][j + 1] + rBEACH[3] * actualBoard[i - 1][j + 1] + rBEACH[7] * actualBoard[i + 1][j - 1]) / sumOfWindRatiosBeach;
 
                 } else if (shore[i][j] == -2.0) {//na skalach przepisujemy ale w sumie moglibysmy pisac 0
                     temp[i][j] = temp[i][j];
@@ -181,7 +181,7 @@ public class CellularAlgorithm {
         ///przepisanie
         for (int i = 0; i < 708; i++) {
             for (int j = 0; j < 578; j++) {
-                table2[i][j] = temp[i][j];
+                actualBoard[i][j] = temp[i][j];
             }
         }
         //KONIEC WIATRU
