@@ -36,36 +36,38 @@ public class CellularAlgorithm {
         //  123/456/789   gdzie 5 to punk centralny
         double Pitagoras = Math.sqrt(Math.pow(xCurrent, 2) + Math.pow(yCurrent, 2));
         double naroznik = (Math.abs(yCurrent) + Math.abs(yCurrent)) / Pitagoras;
-        double skladowaX = Math.abs(xCurrent) / Pitagoras;
-        double skladowaY = Math.abs(yCurrent) / Pitagoras;
+        double partX = Math.abs(xCurrent) / Pitagoras;
+
+        double partY = Math.abs(yCurrent) / Pitagoras;
         for (int i = 0; i < MooreNeighborhood.length; i++) MooreNeighborhood[i] = 0.0;
-        if (xCurrent > 0 && yCurrent > 0)    // Prawo Dol
+        //ustawiamy wspolczynniki w zaleznosci od kierunku
+        if (xCurrent > 0 && yCurrent > 0)    // w Prawo i w Dol
         {
             MooreNeighborhood[1] = naroznik;
-            MooreNeighborhood[2] = skladowaY;
-            MooreNeighborhood[4] = skladowaX;
+            MooreNeighborhood[2] = partY;
+            MooreNeighborhood[4] = partX;
         } else if (xCurrent > 0 && yCurrent == 0)    // w Prawo
         {
             System.out.println("tu");
             MooreNeighborhood[4] = 1;
-        } else if (xCurrent > 0 && yCurrent < 0)    // w prawo gore
+        } else if (xCurrent > 0 && yCurrent < 0)    // w prawo i w gore
         {
             MooreNeighborhood[7] = naroznik;
-            MooreNeighborhood[8] = skladowaY;
-            MooreNeighborhood[4] = skladowaX;
-        } else if (xCurrent < 0 && yCurrent > 0)    // lewo dol
+            MooreNeighborhood[8] = partY;
+            MooreNeighborhood[4] = partX;
+        } else if (xCurrent < 0 && yCurrent > 0)    //W  lewo i w dol
         {
             MooreNeighborhood[3] = naroznik;
-            MooreNeighborhood[2] = skladowaY;
-            MooreNeighborhood[6] = skladowaX;
+            MooreNeighborhood[2] = partY;
+            MooreNeighborhood[6] = partX;
         } else if (xCurrent < 0 && yCurrent == 0)    // w lewo
         {
             MooreNeighborhood[6] = 1;
-        } else if (xCurrent < 0 && yCurrent < 0)    // w gore lewo
+        } else if (xCurrent < 0 && yCurrent < 0)    // w gore I  W lewo
         {
             MooreNeighborhood[9] = naroznik;
-            MooreNeighborhood[8] = skladowaY;
-            MooreNeighborhood[6] = skladowaX;
+            MooreNeighborhood[8] = partY;
+            MooreNeighborhood[6] = partX;
         } else if (xCurrent == 0 && yCurrent < 0)    // w gore
         {
             MooreNeighborhood[8] = 1;
@@ -76,37 +78,33 @@ public class CellularAlgorithm {
         MooreNeighborhood[5] = 100 / currentPower; //zwiekszenie licznika spowalnia moze byc np 100000 dla plazy
         double normalizacja = sumOfArray(MooreNeighborhood);
         for (int i = 0; i < MooreNeighborhood.length; i++) MooreNeighborhood[i] /= normalizacja;
-        // System.out.println("xpradu:" + xCurrent + "   yprdu:" + yCurrent + "   currentPower:" + currentPower);
-        // System.out.println(MooreNeighborhood[1] + " " + MooreNeighborhood[2] + " " + MooreNeighborhood[3]);
-        // System.out.println(MooreNeighborhood[4] + " " + MooreNeighborhood[5] + " " + MooreNeighborhood[6]);
-        //System.out.println(MooreNeighborhood[7] + " " + MooreNeighborhood[8] + " " + MooreNeighborhood[9]);
     }
 
-    public void pradyMorskie(int startX, int endX, int startY, int endY, double[][] shore) {
+    public void seaCurrents(int startX, int endX, int startY, int endY, double[][] shore) {
         double[][] temp = new double[708][578];
-        for (int wiersz = 0; wiersz < 708; wiersz++) {
-            for (int kolumna = 0; kolumna < 578; kolumna++) {
-                temp[wiersz][kolumna] = actualBoard[wiersz][kolumna];
+        for (int w = 0; w < 708; w++) {
+            for (int k = 0; k < 578; k++) {
+                temp[w][k] = actualBoard[w][k];
             }
         }
-        for (int wiersz = startY; wiersz < endY; wiersz++) {
-            for (int kolumna = startX; kolumna < endX; kolumna++) {
-                if (shore[wiersz][kolumna] >= 0) {
-                    temp[wiersz][kolumna] = (actualBoard[wiersz - 1][kolumna - 1] * MooreNeighborhood[1] +
-                            actualBoard[wiersz - 1][kolumna] * MooreNeighborhood[2] +
-                            actualBoard[wiersz - 1][kolumna + 1] * MooreNeighborhood[3] +
-                            actualBoard[wiersz][kolumna - 1] * MooreNeighborhood[4] +
-                            actualBoard[wiersz][kolumna] * MooreNeighborhood[5] +
-                            actualBoard[wiersz][kolumna + 1] * MooreNeighborhood[6] +
-                            actualBoard[wiersz + 1][kolumna - 1] * MooreNeighborhood[7] +
-                            actualBoard[wiersz + 1][kolumna] * MooreNeighborhood[8] +
-                            actualBoard[wiersz + 1][kolumna + 1] * MooreNeighborhood[9]);
+        for (int w = startY; w < endY; w++) {
+            for (int k = startX; k < endX; k++) {
+                if (shore[w][k] >= 0) {
+                    temp[w][k] = (actualBoard[w - 1][k - 1] * MooreNeighborhood[1] +
+                            actualBoard[w - 1][k] * MooreNeighborhood[2] +
+                            actualBoard[w - 1][k + 1] * MooreNeighborhood[3] +
+                            actualBoard[w][k - 1] * MooreNeighborhood[4] +
+                            actualBoard[w][k] * MooreNeighborhood[5] +
+                            actualBoard[w][k + 1] * MooreNeighborhood[6] +
+                            actualBoard[w + 1][k - 1] * MooreNeighborhood[7] +
+                            actualBoard[w + 1][k] * MooreNeighborhood[8] +
+                            actualBoard[w + 1][k + 1] * MooreNeighborhood[9]);
                 }
             }
         }
-        for (int wiersz = 0; wiersz < 700; wiersz++) {
-            for (int kolumna = 0; kolumna < 570; kolumna++) {
-                actualBoard[wiersz][kolumna] = temp[wiersz][kolumna];
+        for (int w = 0; w < 700; w++) {
+            for (int k = 0; k < 570; k++) {
+                actualBoard[w][k] = temp[w][k];
             }
         }
 
@@ -167,13 +165,12 @@ public class CellularAlgorithm {
         //WIATR
         for (int i = 1; i < 707; i++) {
             for (int j = 1; j < 577; j++) {
-                if (shore[i][j] == 0.0) {//jesli jestesmy na morzu - zostawilem
+                if (shore[i][j] == 0.0) {//jesli jestesmy na morzu
                     temp[i][j] = (r[2] * actualBoard[i - 1][j] + r[8] * actualBoard[i + 1][j] + r[4] * actualBoard[i][j - 1] + r[6] * actualBoard[i][j + 1] + r[5] * actualBoard[i][j] + r[1] * actualBoard[i - 1][j - 1] + r[9] * actualBoard[i + 1][j + 1] + r[3] * actualBoard[i - 1][j + 1] + r[7] * actualBoard[i + 1][j - 1]) / sumOfWindRatios;
-//				 temp[i][j] = (2*(mg.actualBoard[i-1][j]+mg.actualBoard[i+1][j]+mg.actualBoard[i][j-1]+mg.actualBoard[i][j+1]) + 4*mg.actualBoard[i][j] + (mg.actualBoard[i-1][j-1] + mg.actualBoard[i+1][j+1] + mg.actualBoard[i-1][j+1] + mg.actualBoard[i+1][j-1]))/16;
                 } else if (shore[i][j] == -1.0) {//jesli jestemy na plazy - ropa porusza sie duzo wolniej
                     temp[i][j] = (rBEACH[2] * actualBoard[i - 1][j] + rBEACH[8] * actualBoard[i + 1][j] + rBEACH[4] * actualBoard[i][j - 1] + rBEACH[6] * actualBoard[i][j + 1] + rBEACH[5] * actualBoard[i][j] + rBEACH[1] * actualBoard[i - 1][j - 1] + rBEACH[9] * actualBoard[i + 1][j + 1] + rBEACH[3] * actualBoard[i - 1][j + 1] + rBEACH[7] * actualBoard[i + 1][j - 1]) / sumOfWindRatiosBeach;
 
-                } else if (shore[i][j] == -2.0) {//na skalach przepisujemy ale w sumie moglibysmy pisac 0
+                } else if (shore[i][j] == -2.0) {//na skalach przepisujemy wartosc
                     temp[i][j] = temp[i][j];
                 }
             }

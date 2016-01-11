@@ -637,10 +637,10 @@ public class mainGui extends JFrame{
 
 					cellularAlgorithm.windEffect(shore);						// uwzględnienie brzegów
 					cellularAlgorithm.evaporation(Double.parseDouble(wspParowaniaField.getText()));
-					cellularAlgorithm.pradyMorskie(Integer.parseInt(startX.getText()),			// uwzględnienie prądów morskich o parametrach podanych przez użytkownika
-							Integer.parseInt(endX.getText()),
-							Integer.parseInt(startY.getText()),
-							Integer.parseInt(endY.getText()),shore);
+					cellularAlgorithm.seaCurrents(Integer.parseInt(startX.getText()),            // uwzględnienie prądów morskich o parametrach podanych przez użytkownika
+                            Integer.parseInt(endX.getText()),
+                            Integer.parseInt(startY.getText()),
+                            Integer.parseInt(endY.getText()), shore);
 					resultsPanel.draw(actualBoard,shore);						// rysowanie
 					t++;
 				}
