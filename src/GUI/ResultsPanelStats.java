@@ -2,16 +2,17 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 
+
+/**
+ * Klasa odpowiedziana za rysowanie prawdopodobieństwa wstąpienia ropy na danym obszarze.
+ * Odczytuje dane z pliku i odpowiedznio wyświetla. Im większe prawdopodobieństwo, tym ciemniejszy kolor.
+ */
 public class ResultsPanelStats extends JPanel {
 
-    Color c = new Color(0, 0, 0, 0);
+
+	private static final long serialVersionUID = 1L;
+	Color c = new Color(0, 0, 0, 0);
 
     public ResultsPanelStats() {
         super();
@@ -22,7 +23,11 @@ public class ResultsPanelStats extends JPanel {
         super.paintComponent(g);
     }
 
-
+    /**
+     * Funkcja wyświetlająca tablicę dwuwymiarową na panelu,
+     * zgodnie z przyjętymi zasadami - im więcej ropy, tym ciemniejszy kolor
+     * @param arg tablica z ilością ropy
+     */
     public void draw(Integer [] [] arg) {
         double x;
         Graphics g = getGraphics();
@@ -54,16 +59,11 @@ public class ResultsPanelStats extends JPanel {
                     else if(x==-1){
                         c = new Color(225,251,141);
                     }
-                   // else c = new Color(95, 155, 228);
                	}
                 else c = new Color(255,255,255);
  
-
                 g.setColor(c);
-                g.drawRect(i, j, 1, 1);
-                
-             
-            
+                g.drawRect(i, j, 1, 1);          
                 
             }
 
