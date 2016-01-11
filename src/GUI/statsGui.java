@@ -2,22 +2,20 @@ package GUI;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
+
 
 /**
- *
- * @author dawid
+ * Klasa odpowiedzialna za generowanie statystyk.
+ * Oblicza prawdopodobieństwo, że ropa znajdzie się w określonym miejscu
  */
 public class statsGui extends javax.swing.JFrame {
                  
-    private javax.swing.JEditorPane jEditorPane1;
+	private static final long serialVersionUID = 1L;
+	private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel mainGui;
     private static ResultsPanelStats resultsPanelStat;
@@ -29,6 +27,10 @@ public class statsGui extends javax.swing.JFrame {
         initComponents();
     }
                 
+    /**
+	 * Funkcja, która tworzy obiekty, nadaje im początkowy stan
+	 * i określa parametry GUI - odpowiada za wygląd komponentów
+	 */
     private void initComponents() {
 
         mainGui = new javax.swing.JPanel();
@@ -80,8 +82,6 @@ public class statsGui extends javax.swing.JFrame {
 
         resultsPanelStat.setBackground(new java.awt.Color(95, 155, 228));
 		resultsPanelStat.setBorder(BorderFactory.createMatteBorder(8, 2, 8, 2, new java.awt.Color(1, 7, 110)));
-
-
 		
         resultsPanelStat.setBackground(new java.awt.Color(95, 155, 228));
 		resultsPanelStat.setBorder(BorderFactory.createMatteBorder(8, 2, 8, 2, new java.awt.Color(1, 7, 110)));
@@ -99,9 +99,6 @@ public class statsGui extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
             );
             
-
-
-
 
         javax.swing.GroupLayout mainGuiLayout = new javax.swing.GroupLayout(mainGui);
         mainGui.setLayout(mainGuiLayout);
@@ -138,10 +135,10 @@ public class statsGui extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }                      
 
     /**
-     * @param args the command line arguments
+     * Funkcja tworząca obiekt klasy w nowym wątku, uruchamia okno statystyk
      */
     public static void mainStats() {
         try {
@@ -160,9 +157,6 @@ public class statsGui extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(statsGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new statsGui().setVisible(true);
@@ -178,7 +172,9 @@ public class statsGui extends javax.swing.JFrame {
 
     }
 
-                 
+    /**
+     * Funkcja wypełniająca tablicę odpowienimi wartościami w pliku "wyniki"    
+     */
     public void fillTab() {
 		HashMap<Integer[], Integer> map = readHashMap("wyniki.txt");
 		for(Map.Entry<Integer[], Integer> m : map.entrySet()){
@@ -189,10 +185,10 @@ public class statsGui extends javax.swing.JFrame {
 	}
 	
 	/**
-	 * odczytuje wyniki z pliku 
-	 * @param filename
-	 * @return
+	 * Funkcja odczytująca wyniki z pliku 
+	 * @param filename plik do odczytu
 	 */
+	@SuppressWarnings("unchecked")
 	public HashMap<Integer[], Integer> readHashMap(String filename){
 		HashMap<Integer[], Integer> mapInFile = null;
 	    //read from file 
@@ -202,22 +198,10 @@ public class statsGui extends javax.swing.JFrame {
 	        ObjectInputStream ois=new ObjectInputStream(fis);
 
 	        mapInFile=(HashMap<Integer[], Integer>)ois.readObject();
-//			for(Map.Entry<Integer[], Integer> m :mapInFile.entrySet()){
-//				System.out.println(m.getKey()[0]+" "+m.getKey()[1]);
-//	        }
 	        ois.close();
 	        fis.close();
 	    }catch(Exception e){}
 	    return mapInFile;
-	}
-	
-	public void showTab() {
-	    for (int i=0; i<tab1Sym.length; i++){
-    		for (int j=0; j<tab1Sym[0].length; j++){
-    			System.out.print ("["+i+"]["+j+"]= "+tab1Sym[i][j] + "  ");
-    		}
-    		System.out.println(" ");
-	    }
 	}
 	
 }
