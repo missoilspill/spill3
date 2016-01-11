@@ -647,6 +647,7 @@ public class mainGui extends JFrame{
 
 
 		String sciezka = "plansza256.bmp";
+		//String sciezka = "trojkat.bmp";
 		shore=readShore(sciezka);
 		cellularAlgorithm = new CellularAlgorithm(this);
 
@@ -694,8 +695,12 @@ public class mainGui extends JFrame{
 			public void run() {
 				stop = !stop;
 				System.out.println("STOOOOOOOOOOOOOOOOOOOOP: " + stop);
+				// STATYSTYKI
+				statsGui.mainStats();
 			}
 		}.start();
+		
+		
 		// this.setVisible(false);
 	}
 
