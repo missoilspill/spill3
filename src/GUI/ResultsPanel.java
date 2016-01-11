@@ -9,9 +9,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+
+/**
+ * Klasa odpowiedziana za rysowanie.
+ * Odczytuje dane z pliku i odpowiedznio wyświetla. Im większa warstwa ropy, tym ciemniejszy kolor.
+ */
 public class ResultsPanel extends JPanel {
 
-    Color c = new Color(0, 0, 0, 0);
+	private static final long serialVersionUID = 1L;
+	Color c = new Color(0, 0, 0, 0);
 
     public ResultsPanel() {
         super();
@@ -22,6 +28,10 @@ public class ResultsPanel extends JPanel {
         super.paintComponent(g);
     }
 
+    /**
+     * Funkcja zapisująca tablicę do pliku
+     * @param tab	tablica do zapisania
+     */
    public void saveTableToFile(double [][] tab) throws FileNotFoundException, IOException {
     	File folderWithResults = new File("Results");
     	if (!folderWithResults.exists()) {
@@ -42,7 +52,12 @@ public class ResultsPanel extends JPanel {
     	bw.close();
     }
 
-
+   /**
+    * Funkcja wyświetlająca tablicę dwuwymiarową na panelu,
+    * zgodnie z przyjętymi zasadami - im więcej ropy, tym ciemniejszy kolor
+    * @param arg tablica z ilością ropy
+    * @param shore tablica zawierająca brzegi
+    */
     public void draw(double [] [] arg,double[][] shore) {
         double x;
         Graphics g = getGraphics();
@@ -70,24 +85,23 @@ public class ResultsPanel extends JPanel {
                         c = new Color(170, 170, 170);
                     else c = new Color(95, 155, 228);
 
-                    if(!((shore[i][j] <0)&&(c.getBlue()==228))){//jesli nie ma takiej sytuacji ze chcemy narysowac niebieskie na brzegu
+                    if(!((shore[i][j] <0)&&(c.getBlue()==228))){		//jesli nie ma takiej sytuacji ze chcemy narysowac niebieskie na brzegu
                         g.setColor(c);
                         g.drawRect(i, j, 1, 1);
                     }
 
                 }
-                if (x <= 0.01 && x != 0 && !(shore[i][j] <0)) {// nie malujemy niebieskiego na brzegu
+                if (x <= 0.01 && x != 0 && !(shore[i][j] <0)) {			// nie malujemy niebieskiego na brzegu
                     c = new Color(95, 155, 228);
                     g.setColor(c);
                     g.drawRect(i, j, 1, 1);
                 }
-
-                if(x==-2){
+                else if(x==-2){
                     c = new Color(0,255,0);
                     g.setColor(c);
                     g.drawRect(i, j, 1, 1);
                 }
-                if(x==-1){
+                else if(x==-1){
                     c = new Color(225,251,141);
                     g.setColor(c);
                     g.drawRect(i, j, 1, 1);
